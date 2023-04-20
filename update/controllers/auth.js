@@ -9,7 +9,7 @@ const KEYS = require('../config/keys.json');
 
 let userProfile; //only used if you want to see user info beyond username
 
-const Player = require('../models/player_model');
+const Artist = require('../models/artist_model');
 
 router.use(session({
   resave: false,
@@ -63,8 +63,8 @@ router.get('/auth/google/callback',
 
 router.get("/auth/logout", (request, response) => {
   request.logout();
-  let playerID = request.user._json.email;
-  Player.createPlayer(playerID, playerID.split('.')[0]);//only creates if not in players.json
+  let artistID = request.user._json.email;
+  Artist.createArtist(artistID, artistID.split('.')[0]);//only creates if not in artists.json
   response.redirect('/');
 });
 

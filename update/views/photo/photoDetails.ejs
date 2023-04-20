@@ -1,0 +1,25 @@
+<%- include('../partials/header', {title:"Photo Details- P, R, S", user:user}) -%>
+
+<h2>Photo - <%=photo.photoDisplayName%></h2>
+
+<img src="<%=photo.photoImage%>" height=300 />
+<table>
+  <tr>
+    <th>
+      Name:
+    </th>
+    <td>
+      <%=photo.photoDisplayName%>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      Description:
+    </th>
+    <td>
+      <%=photo.photoDescription%>
+    </td>
+  </tr>
+</table>
+
+<%- include('../partials/footer') -%>

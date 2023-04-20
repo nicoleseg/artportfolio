@@ -1,7 +1,7 @@
 const express = require('express'),
   router = express.Router();
 
-const artist = require('../models/artist_model');
+const Artist = require('../models/artist_model');
 
 /*
   This is a function that allows us to avoid putting an
@@ -19,49 +19,51 @@ function loggedIn(request, response, next) {
 }
 
 
-router.get('/portfolios', loggedIn, function(request, response) {
-  let opponentArray = Opponent.getSortedArtists();
+router.get('/artists', loggedIn, function(request, response) {
+  let artistArray = Artist.getSortedArtists();
 
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
-  response.render("artist/artistPortfolios",{
+  response.render("artist/allArtists",{
     user: request.user,
-    opponents: opponentArray
+    artists: artistArray
   });
 });
 
-router.get('/opponent/:opponentName', loggedIn, function(request, response) {
-  let opponentName = request.params.opponentName;
-  let opponent = Opponent.getOpponent(opponentName);
+router.get('/artist/:artistName', loggedIn, function(request, response) {
+  let artistName = request.params.artistName;
+  let artist = Artist.getArtist(artistName);
 
-  if(opponent){
+  if(artist){
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
-    response.render("opponent/opponentDetails",{
+    response.render("artist/artistDetails",{
       user: request.user,
-      opponent: opponent
+      artist: artist
     });
   }else{
     response.redirect('/error?code=404');
   }
 });
 
-router.get('/opponentCreate', loggedIn, function(request, response) {
+router.get('/artistCreate', loggedIn, function(request, response) {
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
-    response.render("opponent/opponentCreate", {
+    response.render("artist/artistCreate", {
       user: request.user
     });
 });
 
-router.post('/opponentCreate', loggedIn, function(request, response) {
-    let opponentName = request.body.opponentName;
-    let opponentPhoto = request.body.opponentPhoto;
-    if(opponentName&&opponentPhoto){
-      Opponent.createOpponent(opponentName, opponentPhoto);
+router.post('/artistCreate', loggedIn, function(request, response) {
+    let artistID = request.body.artistID;
+    let artistDisplayName = request.body.artistDisplayName;
+    let gradYear = request.body.gradYear;
+    let artistStatement = request.body.artistStatement;
+    if(artistName&&artistPhoto){
+      Artist.createArtist(artistID,artistDisplayName, gradYear,artistStatement);
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
-      response.redirect("/opponent/"+opponentName);
+      response.redirect("/artist/"+artistName);
     }else{
       response.redirect('/error?code=400');
     }

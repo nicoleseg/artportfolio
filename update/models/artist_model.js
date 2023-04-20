@@ -36,23 +36,22 @@ exports.getSortedArtists =  function() {
     results.push(allArtists[artist])
   }
   results.sort(function(a, b){
-    return new Date(b.date) - new Date(a.date);
+    return (b.gradYear) - (a.gradYear);
   });
 
   return results;
 }
 
-exports.createArtist =  function (artistID, artistDisplayName){
+exports.createArtist =  function (artistID, artistDisplayName, gradYear, artistStatement){
   let allArtists = JSON.parse(fs.readFileSync(__dirname+'/../data/artists.json'));
   if(!allArtists[artistID]){
     let newArtist={
       "displayName": artistDisplayName,
       "gradYear": gradYear,
       "artistStatement": artistStatement,
-      "emailInfo": emailInfo,
+      "emailInfo": artistID,
       "privileges": ["artist"],
-      "photosIDs": [],
-      "dateJoined": new Date()
+      "photosIDs": []
     }
     allArtists[artistID] = newArtist;
     fs.writeFileSync(__dirname+'/../data/artists.json', JSON.stringify(allArtists));
@@ -64,6 +63,3 @@ exports.removeArtist = function(artistID){
   if(allArtists[artistID]) delete allArtists[artistID];
   fs.writeFileSync(__dirname+'/../data/artists.json', JSON.stringify(allArtists));
 }
-
-
-

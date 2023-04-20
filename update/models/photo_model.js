@@ -26,7 +26,7 @@ exports.getPhoto =  function(photoID) {
   return allPhotos[photoID];
 }
 
-exports.createPhoto =  function (photoID, photoDisplayName){
+exports.createPhoto =  function (photoID, photoDisplayName, photoImage, photoDescription){
   let allPhotos = JSON.parse(fs.readFileSync(__dirname+'/../data/photos.json'));
   if(!allPhotos[photoID]){
     let newPhoto={

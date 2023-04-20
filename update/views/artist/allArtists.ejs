@@ -1,0 +1,37 @@
+<%- include('../partials/header', {title:"P, R, S: All Artists", user:user}) -%>
+
+<h2>All Artists</h2>
+<table>
+  <tr>
+    <th>
+      ID
+    </th>
+    <th>
+      Display Name
+    </th>
+    <th>
+      Losses
+    </th>
+    <th>
+      Ties
+    </th>
+    <th>
+      Change Status
+    </th>
+  </tr>
+  <%for(let i =0; i<artists.length; i++){%>
+  <th>
+    <a href="/artist/<%=artists[i].artistDisplayName%>"><%=artists[i].artistDisplayName%></a>
+  </th>
+  <th>
+    <%=artists[i].gradYear%>
+  </th>
+  <th>
+    <button>Delete Artist</button>
+    <button>Make Admin</button>
+  </th>
+  </tr>
+  <%}%>
+</table>
+
+  <%- include('../partials/footer') -%>

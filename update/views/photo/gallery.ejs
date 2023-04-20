@@ -1,0 +1,30 @@
+<%- include('../partials/header', {title:"P, R, S: All Photos", user:user}) -%>
+
+<h2>All Photos</h2>
+<table>
+  <tr>
+    <th>
+      ID
+    </th>
+    <th>
+      Display Name
+    </th>
+    <th>
+      Photo
+    </th>
+  </tr>
+  <%for(let i =0; i<photos.length; i++){%>
+  <th>
+    <a href="/photos/<%=photos[i].photoDisplayName%>"><%=photos[i].photoImage%></a>
+  </th>
+  <th>
+    <img src="<%=photos[i].photoImage%>" width='200'><br>
+  </th>
+  <th>
+    <button>Delete Photos</button>
+  </th>
+  </tr>
+  <%}%>
+</table>
+
+  <%- include('../partials/footer') -%>
