@@ -57,10 +57,8 @@ router.get('/artistCreate', loggedIn, function(request, response) {
 router.post('/artistCreate', loggedIn, function(request, response) {
     let artistID = request.body.artistID;
     let artistDisplayName = request.body.artistDisplayName;
-    let gradYear = request.body.gradYear;
-    let artistStatement = request.body.artistStatement;
     if(artistName&&artistPhoto){
-      Artist.createArtist(artistID,artistDisplayName, gradYear,artistStatement);
+      Artist.createArtist(artistID,artistDisplayName);
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
       response.redirect("/artist/"+artistName);

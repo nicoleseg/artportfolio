@@ -1,7 +1,7 @@
 const express = require('express'),
   router = express.Router();
 
-const Player = require('../models/player_model');
+const Artist = require('../models/artist_model');
 
 
 router.get('/', function(request, response) {

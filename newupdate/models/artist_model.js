@@ -42,13 +42,11 @@ exports.getSortedArtists =  function() {
   return results;
 }
 
-exports.createArtist =  function (artistID, artistDisplayName, gradYear, artistStatement){
+exports.createArtist =  function (artistID, artistDisplayName){
   let allArtists = JSON.parse(fs.readFileSync(__dirname+'/../data/artists.json'));
   if(!allArtists[artistID]){
     let newArtist={
       "displayName": artistDisplayName,
-      "gradYear": gradYear,
-      "artistStatement": artistStatement,
       "emailInfo": artistID,
       "privileges": ["artist"],
       "photosIDs": []

@@ -8,13 +8,6 @@
     </th>
     <th>
       Display Name
-    </th>
-    <th>
-      Losses
-    </th>
-    <th>
-      Ties
-    </th>
     <th>
       Change Status
     </th>
@@ -22,9 +15,6 @@
   <%for(let i =0; i<artists.length; i++){%>
   <th>
     <a href="/artist/<%=artists[i].artistDisplayName%>"><%=artists[i].artistDisplayName%></a>
-  </th>
-  <th>
-    <%=artists[i].gradYear%>
   </th>
   <th>
     <button>Delete Artist</button>
