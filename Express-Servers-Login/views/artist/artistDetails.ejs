@@ -1,0 +1,34 @@
+<%- include('../partials/header', {title:"Artist Details- P, R, S", user:user}) -%>
+
+<h2>Artist - <%=artist.artistDisplayName%></h2>
+
+<table>
+  <tr>
+    <th>
+      Name:
+    </th>
+    <td>
+      <%=artist.artistDisplayName%>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      Email Info:
+    </th>
+    <td>
+      <%=artist.artistID%>
+    </td>
+  </tr>
+  <tr>
+  <%for(let i =0; i<artist.photos.length; i++){%>
+  <th>
+    <a href="/photos/<%=artist.photos[i].photoDisplayName%>"><%artist.photos[i].photoImage%></a>
+  </th>
+  <th>
+    <img src="<%=photos[i].photoImage%>" width='200'><br>
+  </th>
+  </tr>
+  <%}%>
+</table>
+
+<%- include('../partials/footer') -%>

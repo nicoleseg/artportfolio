@@ -8,17 +8,10 @@
     </th>
     <th>
       Display Name
-    <th>
-      Change Status
-    </th>
   </tr>
   <%for(let i =0; i<artists.length; i++){%>
   <th>
     <a href="/artist/<%=artists[i].artistDisplayName%>"><%=artists[i].artistDisplayName%></a>
-  </th>
-  <th>
-    <button>Delete Artist</button>
-    <button>Make Admin</button>
   </th>
   </tr>
   <%}%>

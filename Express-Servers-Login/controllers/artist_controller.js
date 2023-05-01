@@ -14,7 +14,7 @@ function loggedIn(request, response, next) {
   if (request.user) {
     next();
   } else {
-    response.redirect('/login');
+    response.redirect('/artists');
   }
 }
 
@@ -46,22 +46,22 @@ router.get('/artist/:artistName', loggedIn, function(request, response) {
   }
 });
 
-router.get('/artistCreate', loggedIn, function(request, response) {
+router.get('/artists/new', loggedIn, function(request, response) {
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render("artist/artistCreate", {
       user: request.user
-    });
-});
+  });
+  });
 
-router.post('/artistCreate', loggedIn, function(request, response) {
+router.post('/artists', loggedIn, function(request, response) {
     let artistID = request.body.artistID;
     let artistDisplayName = request.body.artistDisplayName;
-    if(artistName&&artistPhoto){
+    if(artistDisplayName){
       Artist.createArtist(artistID,artistDisplayName);
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
-      response.redirect("/artist/"+artistName);
+      response.redirect("/artist/"+artistDetails);
     }else{
       response.redirect('/error?code=400');
     }

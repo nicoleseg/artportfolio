@@ -36,7 +36,7 @@ exports.getSortedArtists =  function() {
     results.push(allArtists[artist])
   }
   results.sort(function(a, b){
-    return (b.gradYear) - (a.gradYear);
+    return b - a;
   });
 
   return results;
@@ -46,10 +46,10 @@ exports.createArtist =  function (artistID, artistDisplayName){
   let allArtists = JSON.parse(fs.readFileSync(__dirname+'/../data/artists.json'));
   if(!allArtists[artistID]){
     let newArtist={
-      "displayName": artistDisplayName,
       "emailInfo": artistID,
+      "displayName": artistDisplayName,
       "privileges": ["artist"],
-      "photosIDs": []
+      "photos": []
     }
     allArtists[artistID] = newArtist;
     fs.writeFileSync(__dirname+'/../data/artists.json', JSON.stringify(allArtists));
@@ -59,5 +59,13 @@ exports.createArtist =  function (artistID, artistDisplayName){
 exports.removeArtist = function(artistID){
   let allArtists = JSON.parse(fs.readFileSync(__dirname+'/../data/artists.json'));
   if(allArtists[artistID]) delete allArtists[artistID];
+  fs.writeFileSync(__dirname+'/../data/artists.json', JSON.stringify(allArtists));
+}
+
+exports.addPhoto = function(artistID, photos){
+  let allArtists = JSON.parse(fs.readFileSync(__dirname+'/../data/artists.json'));
+  if(allArtists[artistID]){
+    allArtists[artistID]["photos"].push(photos["photoID"]);
+  }
   fs.writeFileSync(__dirname+'/../data/artists.json', JSON.stringify(allArtists));
 }

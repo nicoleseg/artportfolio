@@ -1,0 +1,12 @@
+<%- include('../partials/header', {title:"P, R, S: Become an Artist", user:user}) -%>
+
+<h2>  Become an artist!  </h2>
+<form action="/artist" method="POST">
+   <label for="name"> Artist Name: </label>
+   <input type="text" id="name" name="artistDisplayName" value=""><br>
+   <label for="name"> Email: </label>
+   <input type="text" id="email" name="artistID" value=""><br>
+   <input type="submit" value="Yay!" required/>
+</form>
+
+<%- include('../partials/footer') -%>

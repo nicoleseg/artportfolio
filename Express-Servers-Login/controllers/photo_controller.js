@@ -4,7 +4,7 @@ const multer = require('multer');
 const ejs = require('ejs');
 const fs = require('fs');
 
-const File = require('./models/file_model')
+const File = require('../models/file_model')
 const Photo = require('../models/photo_model');
 const Artist = require('../models/artist_model');
 
@@ -27,9 +27,9 @@ let privateStorage = multer.diskStorage({
   destination: function (request, file, cb) {
     cb(null, './uploads')
   },
-  filename: function(req, file, cb) => {
-    const { userId } = req.body
-    cb(null, ${userId}+'-'+file.originalname.replace(' ', '-'));
+  filename: function (request, file, cb) {
+    let userId = request.user._json.email;
+    cb(null, userId+'-'+file.originalname.replace(' ', '-'));
   }
 });
 let privateUpload = multer({ storage: privateStorage });
@@ -49,11 +49,14 @@ router.get('/photos/new', loggedIn, function(request, response) {
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
   response.render("photo/photoUpload", {
-    user: request.user
-  });
+    user: request.user,
+    photos: photosArray
+});
+});
 
 router.post('/photos', loggedIn, privateUpload.any(), async (request, response) => {
   const file = request.files[0];
+  let artistID = request.user;
   let photoDisplayName = request.body.photoDisplayName;
   let photoDescription = request.body.photoDescription;
   if (!file) {
@@ -66,7 +69,10 @@ router.post('/photos', loggedIn, privateUpload.any(), async (request, response) 
   let photoImage = await File.uploadFile(file);
 
   if(photoDisplayName&&photoImage&&photoDescription){
-    Photo.createPhoto(photoImage.filename,photoDisplayName,photoImage, photoDescription);
+    Photo.createPhoto(photoImage.filename,photoDisplayName,photoImage,photoDescription);
+    let photo = Photo.getPhoto(photoImage.filename);
+    let user = request.user;
+    Artist.addPhoto(user, photo);
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.redirect("/photo/"+photoDisplayName);
@@ -77,7 +83,7 @@ router.post('/photos', loggedIn, privateUpload.any(), async (request, response) 
 
 router.get('/photos/:id', loggedIn, function(request, response) {
 let photoDisplayName = request.params.photoDisplayName;
-let photo = Photo.getPhoto(photoDisplayName);
+let photo = Photo.getPhoto(photoID);
 
     if(photo){
       response.status(200);
