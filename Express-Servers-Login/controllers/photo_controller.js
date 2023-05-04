@@ -47,7 +47,6 @@ router.get('/photos', loggedIn, function(request, response) {
 
 router.get('/photos/new', loggedIn, function(request, response) {
   let photosArray = Photo.getSortedPhotos();
-  let fileURLs = File.getSortedPhotos();
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
   response.render("photo/photoUpload", {
@@ -58,8 +57,9 @@ router.get('/photos/new', loggedIn, function(request, response) {
 
 router.post('/photos', loggedIn, privateUpload.any(), async (request, response) => {
   let artistID = request.user;
-  let photoDisplayName = request.photos.photoDisplayName;
-  let photoDescription = request.photos.photoDescription;
+  let photoDisplayName = request.body.photoDisplayName;
+  let photoDescription = request.body.photoDescription;
+  const file = request.files[0];
   if (!file) {
     const error = {
     'httpStatusCode' : 400,
@@ -68,25 +68,28 @@ router.post('/photos', loggedIn, privateUpload.any(), async (request, response) 
     response.send(error);
   }
   let photoImage = await File.uploadFile(file);
-  
+
   if(photoDisplayName&&photoImage&&photoDescription){
-    Photo.createPhoto(photoImage.filename,photoDisplayName,photoImage,photoDescription);
+    console.log(photoDisplayName,photoImage,photoDescription)
+    Photo.createPhoto(photoImage,photoDisplayName,photoImage,photoDescription);
     let photo = Photo.getPhoto(photoImage.filename);
     let user = request.user;
     Artist.addPhoto(user, photo);
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
-    response.redirect("/photo/"+photoDisplayName);
+    response.redirect("/photos/"+photoDisplayName);
   }else{
     response.redirect('/error?code=400');
   }
 });
 
 router.get('/photos/:id', loggedIn, function(request, response) {
-let photoDisplayName = request.params.photoDisplayName;
-let photo = Photo.getPhoto(photoID);
+let id= request.params.id;
+let photo = Photo.getPhoto(id);
+console.log("id",id);
 
     if(photo){
+
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
       response.render("photo/photoDetails",{
