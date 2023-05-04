@@ -46,6 +46,8 @@ router.get('/photos', loggedIn, function(request, response) {
 });
 
 router.get('/photos/new', loggedIn, function(request, response) {
+  let photosArray = Photo.getSortedPhotos();
+  let fileURLs = File.getSortedPhotos();
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
   response.render("photo/photoUpload", {
@@ -55,10 +57,9 @@ router.get('/photos/new', loggedIn, function(request, response) {
 });
 
 router.post('/photos', loggedIn, privateUpload.any(), async (request, response) => {
-  const file = request.files[0];
   let artistID = request.user;
-  let photoDisplayName = request.body.photoDisplayName;
-  let photoDescription = request.body.photoDescription;
+  let photoDisplayName = request.photos.photoDisplayName;
+  let photoDescription = request.photos.photoDescription;
   if (!file) {
     const error = {
     'httpStatusCode' : 400,
@@ -67,7 +68,7 @@ router.post('/photos', loggedIn, privateUpload.any(), async (request, response) 
     response.send(error);
   }
   let photoImage = await File.uploadFile(file);
-
+  
   if(photoDisplayName&&photoImage&&photoDescription){
     Photo.createPhoto(photoImage.filename,photoDisplayName,photoImage,photoDescription);
     let photo = Photo.getPhoto(photoImage.filename);

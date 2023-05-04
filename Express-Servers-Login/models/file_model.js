@@ -53,14 +53,4 @@ exports.uploadFile = async function(file) {
 
   return fileURL;
 }
-
-exports.uploadFiles = async function(files) {
-  let fileURLs = [];
-
-  for(let i=0; i<files.length; i++){
-   let fileURL = await exports.uploadFile(files[i]);
-   fileURLs.push(fileURL);
-  }
-
-  return fileURLs;
-}
+//maybe i need to add a get request for the file itself? or get the media by itself or make this a third entity ?
