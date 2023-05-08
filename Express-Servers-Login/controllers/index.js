@@ -1,6 +1,5 @@
 const express = require('express'),
   router = express.Router();
-
 const Artist = require('../models/artist_model');
 
 
@@ -42,5 +41,6 @@ router.get('/error', function(request, response) {
     "details": errors[errorCode]
   });
 });
+
 
 module.exports = router

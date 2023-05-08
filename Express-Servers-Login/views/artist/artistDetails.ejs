@@ -1,14 +1,13 @@
 <%- include('../partials/header', {title:"Artist Details- TAP", user:user}) -%>
 
 <h2>Artist - <%=artist.artistDisplayName%></h2>
-
 <table>
   <tr>
     <th>
       Name:
     </th>
     <td>
-      <%=artist.artistDisplayName%>
+      <%=artist.displayName%>
     </td>
   </tr>
   <tr>
@@ -16,16 +15,16 @@
       Email Info:
     </th>
     <td>
-      <%=artist.artistID%>
+      <%=artist.emailInfo%>
     </td>
   </tr>
   <tr>
   <%for(let i =0; i<artist.photos.length; i++){%>
   <th>
-    <a href="/photos/<%=artist.photos[i].photoDisplayName%>"><%artist.photos[i].photoImage%></a>
+    <a href="/photos/<%=artist.photos[i].photoImage%>"><%artist.photos[i].displayName%></a>
   </th>
   <th>
-    <img src="<%=photos[i].photoImage%>" width='200'><br>
+    <img src="<%=artist.photos[i].photoImage%>" width='200'><br>
   </th>
   </tr>
   <%}%>

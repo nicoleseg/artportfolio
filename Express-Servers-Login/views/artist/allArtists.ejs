@@ -4,14 +4,13 @@
 <table>
   <tr>
     <th>
-      ID
+      Name
     </th>
-    <th>
-      Display Name
   </tr>
+  <tr>
   <%for(let i =0; i<artists.length; i++){%>
   <th>
-    <a href="/artist/<%=artists[i].artistDisplayName%>"><%=artists[i].artistDisplayName%></a>
+    <a href="/artist/<%=artists[i].emailInfo%>"><%=artists[i].displayName%></a>
   </th>
   </tr>
   <%}%>

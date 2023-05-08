@@ -25,20 +25,24 @@ function loggedIn(request, response, next) {
 
 let privateStorage = multer.diskStorage({
   destination: function (request, file, cb) {
-    cb(null, './uploads')
+    cb(null, './public/images')
   },
+//  filename: function (request, file, cb) {
+//    let userId = request.user._json.email;
+//    cb(null, userId+'-'+file.originalname.replace(' ', '-'));
+//  }
   filename: function (request, file, cb) {
-    let userId = request.user._json.email;
-    cb(null, userId+'-'+file.originalname.replace(' ', '-'));
+  //  let userId = request.user._json.email;
+    cb(null, file.originalname.replace(' ', '-'));
   }
 });
 let privateUpload = multer({ storage: privateStorage });
 
 router.get('/photos', loggedIn, function(request, response) {
   let photosArray = Photo.getSortedPhotos();
-
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
+  console.log(photosArray)
   response.render("photo/gallery",{
     user: request.user,
     photos: photosArray
@@ -68,28 +72,25 @@ router.post('/photos', loggedIn, privateUpload.any(), async (request, response) 
     response.send(error);
   }
   let photoImage = await File.uploadFile(file);
-
   if(photoDisplayName&&photoImage&&photoDescription){
-    console.log(photoDisplayName,photoImage,photoDescription)
+    console.log(photoDisplayName,photoImage,photoDescription,photoImage)
     Photo.createPhoto(photoImage,photoDisplayName,photoImage,photoDescription);
-    let photo = Photo.getPhoto(photoImage.filename);
-    let user = request.user;
-    Artist.addPhoto(user, photo);
+    let photo = Photo.getPhoto(photoImage);
+    Artist.addPhoto(artistID, photo);
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
-    response.redirect("/photos/"+photoDisplayName);
+    response.redirect("/photos/"+photoImage);
+    console.log("ID",photoImage);
   }else{
     response.redirect('/error?code=400');
   }
 });
 
 router.get('/photos/:id', loggedIn, function(request, response) {
-let id= request.params.id;
+console.log("ID",request.params.id);
+let id= request.params.id
 let photo = Photo.getPhoto(id);
-console.log("id",id);
-
     if(photo){
-
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
       response.render("photo/photoDetails",{

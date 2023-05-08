@@ -9,14 +9,20 @@
     <th>
       Photo
     </th>
+    <th>
+      Description
+    </th>
   </tr>
   <tr>
   <%for(let i =0; i<photos.length; i++){%>
   <th>
-    <a href="/photos/<%=photos[i].photoDisplayName%>"><%=photos[i].photoImage%></a>
+    <a href="/photos/<%=photos[i].image%>"><%=photos[i].displayName%></a>
   </th>
   <th>
-    <img src="<%=photos[i].photoImage%>" width='200'><br>
+    <img src="<%=photos[i].image%>" width='200'><br>
+  </th>
+  <th>
+    <%=photos[i].description%>
   </th>
   </tr>
   <%}%>

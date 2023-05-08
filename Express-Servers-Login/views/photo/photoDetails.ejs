@@ -1,15 +1,15 @@
 <%- include('../partials/header', {title:"Photo Details- TAP", user:user}) -%>
 
-<h2>Photo - <%=photo.photoDisplayName%></h2>
+<h2>Photo - <%=photo.displayName%></h2>
 
-<img src="<%=photo.photoImage%>" height=300 />
+<img src="<%=photo.image%>" height=300 />
 <table>
   <tr>
     <th>
       Name:
     </th>
     <td>
-      <%=photo.photoDisplayName%>
+      <%=photo.displayName%>
     </td>
   </tr>
   <tr>
@@ -17,12 +17,9 @@
       Description:
     </th>
     <td>
-      <%=photo.photoDescription%>
+      <%=photo.description%>
     </td>
   </tr>
-  <th>
-    <button>Delete Photo</button>
-  </th>
 </table>
 
 <%- include('../partials/footer') -%>

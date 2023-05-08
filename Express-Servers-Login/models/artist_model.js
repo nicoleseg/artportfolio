@@ -62,10 +62,10 @@ exports.removeArtist = function(artistID){
   fs.writeFileSync(__dirname+'/../data/artists.json', JSON.stringify(allArtists));
 }
 
-exports.addPhoto = function(artistID, photos){
+exports.addPhoto = function(artistID, photo){
   let allArtists = JSON.parse(fs.readFileSync(__dirname+'/../data/artists.json'));
   if(allArtists[artistID]){
-    allArtists[artistID]["photos"].push(photos["photoID"]);
+    allArtists[artistID]["photos"].push(photo["photos"]);
   }
   fs.writeFileSync(__dirname+'/../data/artists.json', JSON.stringify(allArtists));
 }
