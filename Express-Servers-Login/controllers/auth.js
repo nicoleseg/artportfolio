@@ -58,6 +58,8 @@ router.get('/auth/google/callback',
   }),
   function(request, response) {
     console.log(userProfile);
+    logger.insert(request.user._json.email);
+
     response.redirect('/');
   });
 
