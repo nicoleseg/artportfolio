@@ -1,7 +1,12 @@
 const express = require('express'),
   router = express.Router();
+  const multer = require('multer');
+  const ejs = require('ejs');
+  const fs = require('fs');
 
-const Artist = require('../models/artist_model');
+  const File = require('../models/file_model')
+  const Photo = require('../models/photo_model');
+  const Artist = require('../models/artist_model');
 
 /*
   This is a function that allows us to avoid putting an
@@ -21,7 +26,6 @@ function loggedIn(request, response, next) {
 
 router.get('/artists', loggedIn, function(request, response) {
   let artistArray = Artist.getSortedArtists();
-
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
   response.render("artist/allArtists",{
@@ -30,10 +34,9 @@ router.get('/artists', loggedIn, function(request, response) {
   });
 });
 
-router.get('/artist/:artistName', loggedIn, function(request, response) {
-  let artistName = request.params.artistName;
-  let artist = Artist.getArtist(artistName);
-
+router.get('/artists/:id', loggedIn, function(request, response) {
+  let id=request.params.id;
+  let artist = Artist.getArtist(id);
   if(artist){
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
@@ -46,25 +49,56 @@ router.get('/artist/:artistName', loggedIn, function(request, response) {
   }
 });
 
-router.get('/artists/new', loggedIn, function(request, response) {
+router.get('/artists/:id/:photoID', loggedIn, function(request, response) {
+  let id=request.params.id;
+  let photoID=request.params.photoID;
+  let artist = Artist.getArtist(id);
+  let photo=Photo.getPhoto(photoID);
+  if(photo){
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
-    response.render("artist/artistCreate", {
-      user: request.user
-  });
-  });
+    response.render("photo/photoDetails",{
+        user: request.user,
+        photo:photo
+    });
+   }else{
+    response.redirect('/error?code=404');
+  }
+});
 
-router.post('/artists', loggedIn, function(request, response) {
-    let artistID = request.body.artistID;
-    let artistDisplayName = request.body.artistDisplayName;
-    if(artistDisplayName){
-      Artist.createArtist(artistID,artistDisplayName);
+router.get('/artists/:id/:photoID/delete', loggedIn, function(request, response) {
+  let id=request.params.id;
+  let photoID=request.params.photoID;
+  let artist = Artist.getArtist(id);
+  let photo=Photo.getPhoto(photoID);
+  if(photo){
+    response.status(200);
+    response.setHeader('Content-Type', 'text/html')
+    response.redirect("artist/deletePhoto",{
+      user: request.user,
+      artist: artist
+    });
+   }else{
+    response.redirect('/error?code=404');
+  }
+});
+
+router.post('/artists/:id/:photoID', loggedIn, function(request, response) {
+let id= request.params.id
+let photoID= request.params.photoID
+let photo = Photo.getPhoto(photoID);
+    if(photo){
+      Photo.removePhoto(photoID);
+  //    Artist.removePhoto(id,photoID);
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
-      response.redirect("/artist/"+artistDetails);
+      response.render("artist/artistDetails",{
+        user: request.user,
+        artist: artist
+      });
     }else{
-      response.redirect('/error?code=400');
+      response.redirect('/error?code=404');
     }
-});
+  });
 
 module.exports = router;

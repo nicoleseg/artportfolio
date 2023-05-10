@@ -1,5 +1,13 @@
 <%- include('../partials/header', {title:"TAP: All Artists", user:user}) -%>
+<span id="newPhotos">New Photos: N/A<span>
+<script>
+  let socket = io.connect('/');//the default namespace
+  socket.emit('newPhotos', {user:user});
 
+  socket.on('newPhotos', function(data) {
+      let photo = document.getElementById('photo');
+  });
+</script>
 <h2>All Artists</h2>
 <table>
   <tr>
@@ -10,10 +18,11 @@
   <tr>
   <%for(let i =0; i<artists.length; i++){%>
   <th>
-    <a href="/artist/<%=artists[i].emailInfo%>"><%=artists[i].displayName%></a>
+    <a href="/artists/<%=artists[i].id%>"><%=artists[i].displayName%></a>
   </th>
   </tr>
   <%}%>
 </table>
+
 
   <%- include('../partials/footer') -%>

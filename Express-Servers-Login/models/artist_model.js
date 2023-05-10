@@ -42,11 +42,12 @@ exports.getSortedArtists =  function() {
   return results;
 }
 
-exports.createArtist =  function (artistID, artistDisplayName){
+exports.createArtist =  function (artistID, artistDisplayName, emailInfo){
   let allArtists = JSON.parse(fs.readFileSync(__dirname+'/../data/artists.json'));
   if(!allArtists[artistID]){
     let newArtist={
-      "emailInfo": artistID,
+      "id": artistID,
+      "emailInfo": emailInfo,
       "displayName": artistDisplayName,
       "privileges": ["artist"],
       "photos": []
@@ -65,7 +66,13 @@ exports.removeArtist = function(artistID){
 exports.addPhoto = function(artistID, photo){
   let allArtists = JSON.parse(fs.readFileSync(__dirname+'/../data/artists.json'));
   if(allArtists[artistID]){
-    allArtists[artistID]["photos"].push(photo["photos"]);
+    allArtists[artistID]["photos"].push(photo);
   }
+  fs.writeFileSync(__dirname+'/../data/artists.json', JSON.stringify(allArtists));
+}
+
+exports.removePhoto = function(artistID, photo){
+  let allArtists = JSON.parse(fs.readFileSync(__dirname+'/../data/artists.json'));
+  if(allArtists[artistID]["photos"][photo])delete allArtists[artistID]["photos"][photo];
   fs.writeFileSync(__dirname+'/../data/artists.json', JSON.stringify(allArtists));
 }

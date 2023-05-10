@@ -3,12 +3,10 @@ const socketapi = {
     io: io
 };
 
-io.on('viwerCountUpdate', function(socket){
-    socket.on('viwerCountUpdate', function(data) {
-      console.log('viwerCountUpdate:', data);
-      io.emit('viwerCountUpdate', {
-        numClients: io.engine.clientsCount,
-      });
+io.on('newPhotos', function(socket){
+    socket.on('newPhotos', function(data) {
+      console.log('newPhotos:', data);
+
     });
 });
 

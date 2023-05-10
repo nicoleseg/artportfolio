@@ -24,7 +24,7 @@ app.use(require('./controllers/index'));
 app.use(require('./controllers/photo_controller'));
 app.use(require('./controllers/artist_controller'));
 app.use("", function(request, response) {
-  response.redirect('/error?code=400');
+  response.redirect('/error?code=300');
 });
 
 //..............Start the server...............................//

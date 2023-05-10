@@ -57,7 +57,7 @@ router.get('/auth/google/callback',
     failureRedirect: '/error?code=401'
   }),
   function(request, response) {
-    console.log(userProfile);
+  //  console.log(userProfile);
     response.redirect('/');
   });
 

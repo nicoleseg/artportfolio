@@ -1,0 +1,16 @@
+<%- include('../partials/header', {title:"Artist Details- TAP", user:user}) -%>
+<span id="newPhotos">New Photos: N/A<span>
+<script>
+  let socket = io.connect('/');//the default namespace
+  socket.emit('newPhotos', {user:user});
+
+  socket.on('newPhotos', function(data) {
+      let photo = document.getElementById('photo');
+  });
+</script>
+<form action="/artists/:id/:photoID" enctype="multipart/form-data" method="POST">
+  <br>
+  <input type="submit" value="Confirm" required/>
+</form>
+
+<%- include('../partials/footer') -%>

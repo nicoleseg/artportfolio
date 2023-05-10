@@ -1,5 +1,13 @@
 <%- include('partials/header', {title:"TAP: What are Art Portfolios?"}) -%>
+<span id="newPhotos">New Photos: N/A<span>
+<script>
+  let socket = io.connect('/');//the default namespace
+  socket.emit('newPhotos', {user:user});
 
+  socket.on('newPhotos', function(data) {
+      let photo = document.getElementById('photo');
+  });
+</script>
 <p> Welcome to the official site of the Trinity Art Portfolios! </p>
 <p> An art portfolio is a curated of your original artwor that you can easily share with others.</p>
 <p> Art portfolios can be physical portfolios or they can exist digitally, depending on the type of art your create and how you plan to share your work.</p>
@@ -12,44 +20,9 @@
   <br>
   <br>
   <% if(user){ %>
-  <a href="/play">Click to access Trinity Art Portfolios:</a>
+  <a href="/artists">Click to access the Trinity Artist's portfolios:</a>
   <% }else{ %>
   <a href="/login">Click to login</a>
   <% }%>
-
-    <script src="/socket.io/socket.io.js"></script>
-    <h1>Node socket.io Demo</h1>
-    <div id="messages">
-     <h3>Messages</h3>
-     <textarea id="messagesDisplay" name="story"
-            rows="20" cols="50">
-    </textarea><br>
-    <input type="text" id="messageInput"><button type="button" id="sendButton">Send</button><br>
-
-    </div>
-    <span id="numClientsDisplay">Participants: 0<span>
-    <script>
-      let socket = io.connect('/');//the default namespace
-      socket.emit('viwerCountUpdate', {user:user});
-
-      socket.on('viwerCountUpdate', function(data) {
-          //keep track of the current number of participants in the numClientsDisplay span
-          let numClientsDisplay = document.getElementById('numClientsDisplay');
-          let text = "Participants: " + data.numClients;
-//          numClientsDisplay.innerText = text;
-      //    let mDisplay = document.getElementById('messagesDisplay');
-
-      //    text = data.userFirstName+": "+data.message+"\n";
-
-  //        mDisplay.value =  mDisplay.value.trim()+text;
-      });
-
-    //  document.getElementById("sendButton").addEventListener('click', function(){
-  //      let messageData = document.getElementById("messageInput").value;
-    //    console.log("sending: "+messageData);
-  //      socket.emit('viwerCountUpdate', { user:user, message: messageData });
-  //    });
-
-  </script>
 
   <%- include('partials/footer') -%>

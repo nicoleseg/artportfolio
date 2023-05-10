@@ -3,7 +3,10 @@ const express = require('express'),
 const multer = require('multer');
 const ejs = require('ejs');
 const fs = require('fs');
-
+const io = require( "socket.io" )();
+const socketapi = {
+    io: io
+};
 const File = require('../models/file_model')
 const Photo = require('../models/photo_model');
 const Artist = require('../models/artist_model');
@@ -42,7 +45,6 @@ router.get('/photos', loggedIn, function(request, response) {
   let photosArray = Photo.getSortedPhotos();
   response.status(200);
   response.setHeader('Content-Type', 'text/html')
-  console.log(photosArray)
   response.render("photo/gallery",{
     user: request.user,
     photos: photosArray
@@ -60,7 +62,6 @@ router.get('/photos/new', loggedIn, function(request, response) {
 });
 
 router.post('/photos', loggedIn, privateUpload.any(), async (request, response) => {
-  let artistID = request.user;
   let photoDisplayName = request.body.photoDisplayName;
   let photoDescription = request.body.photoDescription;
   const file = request.files[0];
@@ -73,21 +74,26 @@ router.post('/photos', loggedIn, privateUpload.any(), async (request, response) 
   }
   let photoImage = await File.uploadFile(file);
   if(photoDisplayName&&photoImage&&photoDescription){
-    console.log(photoDisplayName,photoImage,photoDescription,photoImage)
-    Photo.createPhoto(photoImage,photoDisplayName,photoImage,photoDescription);
-    let photo = Photo.getPhoto(photoImage);
-    Artist.addPhoto(artistID, photo);
-    response.status(200);
-    response.setHeader('Content-Type', 'text/html')
-    response.redirect("/photos/"+photoImage);
-    console.log("ID",photoImage);
+    Photo.createPhoto(photoDisplayName,photoDisplayName,photoImage,photoDescription);
+    let photo = Photo.getPhoto(photoDisplayName);
+    let email=request.user._json.email.toString();
+    let result = "";
+    for(let i = 0; i < email.length; i++){
+    if(email[i] !== "."){
+      result += email[i];
+    }
+    }
+    Artist.addPhoto(result, photo);
+    //io.emit('newPhotos', {
+    //  newPhoto: io.engine.photo,
+  //  });
+    response.redirect("/photos/"+photoDisplayName);
   }else{
-    response.redirect('/error?code=400');
+    response.redirect('/error?code=500');
   }
 });
 
 router.get('/photos/:id', loggedIn, function(request, response) {
-console.log("ID",request.params.id);
 let id= request.params.id
 let photo = Photo.getPhoto(id);
     if(photo){

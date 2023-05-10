@@ -1,30 +1,62 @@
 <%- include('../partials/header', {title:"Artist Details- TAP", user:user}) -%>
+<span id="newPhotos">New Photos: N/A<span>
+<script>
+  let socket = io.connect('/');//the default namespace
+  socket.emit('newPhotos', {user:user});
 
-<h2>Artist - <%=artist.artistDisplayName%></h2>
+  socket.on('newPhotos', function(data) {
+      let photo = document.getElementById('photo');
+  });
+</script>
+<h2>Artist - <%=artist.displayName%></h2>
 <table>
   <tr>
     <th>
       Name:
     </th>
-    <td>
+  </tr>
+  <tr>
+    <th>
       <%=artist.displayName%>
-    </td>
+    </th>
   </tr>
   <tr>
     <th>
       Email Info:
     </th>
-    <td>
-      <%=artist.emailInfo%>
-    </td>
   </tr>
+  <tr>
+    <th>
+      <%=artist.emailInfo%>
+    </th>
+  </tr>
+</table>
+<table>
+  <tr>
+    <th>
+      Title
+    </th>
+    <th>
+      Photo
+    </th>
+    <th>
+      Description
+    </th>
+  </tr>
+  <tr>
   <tr>
   <%for(let i =0; i<artist.photos.length; i++){%>
   <th>
-    <a href="/photos/<%=artist.photos[i].photoImage%>"><%artist.photos[i].displayName%></a>
+     <%=artist.photos[i].displayName%>
   </th>
   <th>
-    <img src="<%=artist.photos[i].photoImage%>" width='200'><br>
+    <img src="<%=artist.photos[i].image%>" width='200'><br>
+  </th>
+  <th>
+     <%=artist.photos[i].description%>
+  </th>
+  <th>
+  <a href="/artists/<%=artist.id%>/<%=artist.photos[i].displayName%>/delete">Delete</a>
   </th>
   </tr>
   <%}%>

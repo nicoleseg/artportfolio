@@ -30,6 +30,7 @@ exports.createPhoto =  function (photoID, photoDisplayName, photoImage, photoDes
   let allPhotos = JSON.parse(fs.readFileSync(__dirname+'/../data/photos.json'));
   if(!allPhotos[photoID]){
     let newPhoto={
+      "pid": photoID,
       "displayName": photoDisplayName,
       "image": photoImage,
       "description": photoDescription,
@@ -39,8 +40,7 @@ exports.createPhoto =  function (photoID, photoDisplayName, photoImage, photoDes
     fs.writeFileSync(__dirname+'/../data/photos.json', JSON.stringify(allPhotos));
   }
 }
-
-exports.removePhoto = function(photoImage){
+exports.removePhoto = function(photoID){
   let allPhotos = JSON.parse(fs.readFileSync(__dirname+'/../data/photos.json'));
   if(allPhotos[photoImage]) delete allPhotos[photoImage];
   fs.writeFileSync(__dirname+'/../data/photos.json', JSON.stringify(allPhotos));
