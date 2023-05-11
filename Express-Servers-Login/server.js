@@ -34,7 +34,7 @@ app.set('port', port); //let heroku pick the port if needed
 
 let socketapi =require('./controllers/socketConnections');
 socketapi.io.attach(server);//attach sockets to the server
-
+global.io = socketapi.io;
 //start the server
 server.listen(port, function() {
   console.log('Server started at http://localhost:'+port+'.')

@@ -11,4 +11,21 @@
   <input type="submit" value="Upload an image" required/>
 </form>
 
+<SCRIPT>
+
+    let socket = io.connect('/');//the default namespace
+    socket.on('photoUploadEvent', function(data) {
+        //console.log(data)
+        let mDisplay = document.getElementById('messagesDisplay');
+        let text ="";
+        if(data.userFirstName)
+           text = data.userFirstName+": "+data.message+"\n";
+        else
+           text = data.message+"\n";
+        mDisplay.value +=text;
+
+  });
+
+</SCRIPT>
+
 <%- include('../partials/footer') -%>

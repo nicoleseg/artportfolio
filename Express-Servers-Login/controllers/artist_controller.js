@@ -74,7 +74,7 @@ router.get('/artists/:id/:photoID/delete', loggedIn, function(request, response)
   if(photo){
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
-    response.redirect("artist/deletePhoto",{
+    response.redirect("/artists/:id/:photoID",{
       user: request.user,
       artist: artist
     });
@@ -83,13 +83,13 @@ router.get('/artists/:id/:photoID/delete', loggedIn, function(request, response)
   }
 });
 
-router.post('/artists/:id/:photoID', loggedIn, function(request, response) {
+router.delete('/artists/:id/:photoID', loggedIn, function(request, response) {
 let id= request.params.id
 let photoID= request.params.photoID
 let photo = Photo.getPhoto(photoID);
     if(photo){
       Photo.removePhoto(photoID);
-  //    Artist.removePhoto(id,photoID);
+      Artist.removePhoto(id,photoID);
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
       response.render("artist/artistDetails",{

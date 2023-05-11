@@ -80,13 +80,18 @@ router.post('/photos', loggedIn, privateUpload.any(), async (request, response) 
     let result = "";
     for(let i = 0; i < email.length; i++){
     if(email[i] !== "."){
+      if(email[i] !== "@trinityschoolnycorg"){
       result += email[i];
-    }
+        }
+      }
     }
     Artist.addPhoto(result, photo);
-    //io.emit('newPhotos', {
-    //  newPhoto: io.engine.photo,
-  //  });
+    global.io.emit('photoUploadEvent', {
+      artistDisplayName:result,
+      photoDisplayName: photoDisplayName,
+      photoImage: photoImage,
+      photoDescription: photoDescription
+    });
     response.redirect("/photos/"+photoDisplayName);
   }else{
     response.redirect('/error?code=500');
@@ -107,5 +112,6 @@ let photo = Photo.getPhoto(id);
       response.redirect('/error?code=404');
     }
   });
+
 
 module.exports = router;
