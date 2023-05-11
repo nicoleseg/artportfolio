@@ -1,6 +1,5 @@
 <%- include('../partials/header', {title:"Photo Details- TAP", user:user}) -%>
-
-<h2>Photo - <%=photo.displayName%></h2>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js" integrity="sha512-xbQU0+iHqhVt7VIXi6vBJKPh3IQBF5B84sSHdjKiSccyX/1ZI7Vnkt2/8y8uruj63/DVmCxfUNohPNruthTEQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><h2>Photo - <%=photo.displayName%></h2>
 
 <img src="<%=photo.image%>" height=300 />
 <table>
@@ -21,5 +20,24 @@
     </td>
   </tr>
 </table>
+<script>
+let socket = io.connect('/');//the default namespace
+socket.on('photoUploadEvent', function(data) {
+  let email=request.user._json.email.toString();
+ let artistDisplayName = "";
+  for(let i = 0; i < email.length; i++){
+  if(email[i] !== "."){
+    if(email[i] !== "@trinityschoolnycorg"){
+    artistDisplayName += email[i];
+      }
+   }
+  }
+    console.log(data)
+    let photoDisplayName = document.getElementById('photoDisplayName');
+    let photoDescription = document.getElementById('photoDescription');
+   let photoImage = document.getElementById('photoImage');
+//     let text ="";
+});
+</script>
 
 <%- include('../partials/footer') -%>

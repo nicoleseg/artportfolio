@@ -1,11 +1,4 @@
 <%- include('../partials/header', {title:"TAP: All Photos", user:user}) -%>
-<span id="newPhotos">New Photos: N/A<span>
-<script>
-  let socket = io.connect('/');//the default namespace
-  socket.on('newPhotos', function(data) {
-      let photo = document.getElementById('photo');
-  });
-</script>
 <h2>All Photos</h2>
 <table>
   <tr>
