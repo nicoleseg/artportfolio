@@ -42,6 +42,6 @@ exports.createPhoto =  function (photoID, photoDisplayName, photoImage, photoDes
 }
 exports.removePhoto = function(photoID){
   let allPhotos = JSON.parse(fs.readFileSync(__dirname+'/../data/photos.json'));
-  if(allPhotos[photoImage]) delete allPhotos[photoImage];
+  if(allPhotos[photoID]) delete allPhotos[photoID];
   fs.writeFileSync(__dirname+'/../data/photos.json', JSON.stringify(allPhotos));
 }

@@ -1,12 +1,19 @@
 const express = require('express'),
-  router = express.Router();
+    router = express.Router();
   const multer = require('multer');
   const ejs = require('ejs');
   const fs = require('fs');
-
+  const io = require( "socket.io" )();
+  const socketapi = {
+      io: io
+  };
   const File = require('../models/file_model')
   const Photo = require('../models/photo_model');
   const Artist = require('../models/artist_model');
+  const bodyParser = require('body-parser');
+
+  // use body-parser middleware
+  router.use(bodyParser.json());
 
 /*
   This is a function that allows us to avoid putting an
@@ -71,25 +78,28 @@ router.get('/artists/:id/:photoID/delete', loggedIn, function(request, response)
   let photoID=request.params.photoID;
   let artist = Artist.getArtist(id);
   let photo=Photo.getPhoto(photoID);
-  if(photo){
+  if(photo&&artist){
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
-    response.redirect("/artists/:id/:photoID",{
-      user: request.user,
-      artist: artist
+    response.render("artist/deletePhotoForm",{
+        user:  request.user,
+        photo: photo,
+        artist:artist
     });
    }else{
     response.redirect('/error?code=404');
   }
 });
 
-router.delete('/artists/:id/:photoID', loggedIn, function(request, response) {
-let id= request.params.id
-let photoID= request.params.photoID
-let photo = Photo.getPhoto(photoID);
-    if(photo){
-      Photo.removePhoto(photoID);
-      Artist.removePhoto(id,photoID);
+router.post('/artists/:id/:photoID', loggedIn, async (request, response) => {
+let ad = request.body.artistID;
+let pd = request.body.photoDisplayName;
+let photo = Photo.getPhoto(pd);
+let artist = Artist.getArtist(ad);
+console.log(artist)
+    if(photo&&artist){
+      Photo.removePhoto(pd);
+      Artist.removePhoto(ad,pd);
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
       response.render("artist/artistDetails",{

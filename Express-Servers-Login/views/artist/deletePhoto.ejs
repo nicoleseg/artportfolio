@@ -8,9 +8,49 @@
       let photo = document.getElementById('photo');
   });
 </script>
-<form action="/artists/:id/:photoID" enctype="multipart/form-data" method="DELETE">
+<form action="/photos" enctype="multipart/form-data" method="POST">
+  <label for="title">Title: </label>
+  <input type="text" name="photoDisplayName"/><br>
+  <label for="description">Description:: </label>
+  <input type="text" name="photoDescription"/><br>
+  <input type="file" name="photoImage" accept="image/*"/>
   <br>
-  <input type="submit" value="Confirm" required/>
+  <input type="submit" value="Upload an image" required/>
 </form>
+
+let photoDisplayName = request.body.photoDisplayName;
+let photoDescription = request.body.photoDescription;
+const file = request.files[0];
+if (!file) {
+  const error = {
+  'httpStatusCode' : 400,
+  'message':'Please upload a file'
+   }
+  response.send(error);
+}
+let photoImage = await File.uploadFile(file);
+if(photoDisplayName&&photoImage&&photoDescription){
+  Photo.createPhoto(photoDisplayName,photoDisplayName,photoImage,photoDescription);
+  let photo = Photo.getPhoto(photoDisplayName);
+  let email=request.user._json.email.toString();
+  let result = "";
+  for(let i = 0; i < email.length; i++){
+  if(email[i] !== "."){
+    if(email[i] !== "@trinityschoolnycorg"){
+    result += email[i];
+      }
+    }
+  }
+  Artist.addPhoto(result, photo);
+  global.io.emit('photoUploadEvent', {
+    artistDisplayName:result,
+    photoDisplayName: photoDisplayName,
+    photoImage: photoImage,
+    photoDescription: photoDescription
+  });
+  response.redirect("/photos/"+photoDisplayName);
+}else{
+  response.redirect('/error?code=500');
+}
 
 <%- include('../partials/footer') -%>

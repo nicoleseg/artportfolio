@@ -113,5 +113,4 @@ let photo = Photo.getPhoto(id);
     }
   });
 
-
 module.exports = router;

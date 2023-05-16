@@ -20,24 +20,5 @@
     </td>
   </tr>
 </table>
-<script>
-let socket = io.connect('/');//the default namespace
-socket.on('photoUploadEvent', function(data) {
-  let email=request.user._json.email.toString();
- let artistDisplayName = "";
-  for(let i = 0; i < email.length; i++){
-  if(email[i] !== "."){
-    if(email[i] !== "@trinityschoolnycorg"){
-    artistDisplayName += email[i];
-      }
-   }
-  }
-    console.log(data)
-    let photoDisplayName = document.getElementById('photoDisplayName');
-    let photoDescription = document.getElementById('photoDescription');
-   let photoImage = document.getElementById('photoImage');
-//     let text ="";
-});
-</script>
 
 <%- include('../partials/footer') -%>
