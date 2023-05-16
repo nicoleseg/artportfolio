@@ -59,35 +59,42 @@ router.get('/auth/google/callback',
     failureRedirect: '/error?code=401'
   }),
   function(request, response) {
-    let logsData = [
-  { artistID: 'user1', open_at: '2023-01-01' },
-  { artistID: 'user2', open_at: '2023-01-02' },
-  { artistID: 'user3', open_at: '2023-01-03' },
-];
-
-  //  console.log(userProfile);
-  let email=request.user._json.email.toString();
-  let artistID = "";
-  for(let i = 0; i < email.length; i++){
-  if(email[i] !== "."){
-    if(email[i] !== "@trinityschoolnycorg"){
-    artistID += email[i];
+    // Insert seed data into the logs table
+    db.serialize(() => {
+      let email=request.user._json.email.toString();
+      let artistID = "";
+      for(let i = 0; i < email.length; i++){
+      if(email[i] !== "."){
+        if(email[i] !== "@trinityschoolnycorg"){
+        artistID += email[i];
+          }
+        }
       }
-    }
-  }
- // Get the current timestamp
- const openAt = new Date().toISOString();
+     // Get the current timestamp
+     const openAt = new Date().toISOString();
+      // Drop the logs table if it exists
+      db.run('DROP TABLE IF EXISTS logs');
+
+      // Create the logs table
+      db.run(`CREATE TABLE logs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        artistID TEXT,
+        open_at DATE DEFAULT CURRENT_TIMESTAMP
+      )`);
+
+      db.run(`INSERT INTO logs (artistID, open_at) VALUES (?, ?)`, [artistID, openAt], (err) => {
+        if (err) {
+          console.error('Error inserting login record:', err);
+        }
+
+      });
+      });
+    // Close the database connection
+    db.close();
+  //  console.log(userProfile);
 
  // Insert the new login record into the logs table
- db.run(`INSERT INTO logs (artistID, open_at) VALUES (?, ?)`, [artistID, openAt], (err) => {
-   if (err) {
-     console.error('Error inserting login record:', err);
-   }
 
-   // Add the new login information to the logsData array
-      logsData.push({ artistID, open_at: openAt });
-
- });
     response.redirect('/');
   });
 

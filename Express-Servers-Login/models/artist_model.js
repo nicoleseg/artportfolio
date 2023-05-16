@@ -76,3 +76,9 @@ exports.removePhoto = function(artistID, photo){
   if(allArtists[artistID]["photos"][photo])delete allArtists[artistID]["photos"][photo];
   fs.writeFileSync(__dirname+'/../data/artists.json', JSON.stringify(allArtists));
 }
+
+exports.updatePhoto =  function (artistID,photoID, description){
+  let allArtists = JSON.parse(fs.readFileSync(__dirname+'/../data/artists.json'));
+  if(allArtists[artistID]["photos"][photo]) allArtists[artistID]["photos"][photo]["description"][description];
+  fs.writeFileSync(__dirname+'/../data/artists.json', JSON.stringify(allArtists));
+}

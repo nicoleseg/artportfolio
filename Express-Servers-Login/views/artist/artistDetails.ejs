@@ -1,13 +1,4 @@
 <%- include('../partials/header', {title:"Artist Details- TAP", user:user}) -%>
-<span id="newPhotos">New Photos: N/A<span>
-<script>
-  let socket = io.connect('/');//the default namespace
-  socket.emit('newPhotos', {user:user});
-
-  socket.on('newPhotos', function(data) {
-      let photo = document.getElementById('photo');
-  });
-</script>
 <h2>Artist - <%=artist.displayName%></h2>
 <table>
   <tr>
@@ -57,6 +48,7 @@
   </th>
   <th>
   <a href="/artists/<%=artist.id%>/<%=artist.photos[i].displayName%>/delete">Delete</a>
+  <a href="/artists/<%=artist.id%>/<%=artist.photos[i].displayName%>/update">Update Description</a>
   </th>
   </tr>
   <%}%>

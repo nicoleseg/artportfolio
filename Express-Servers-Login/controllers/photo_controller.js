@@ -113,4 +113,69 @@ let photo = Photo.getPhoto(id);
     }
   });
 
+  router.get('/photos/:id/delete', loggedIn, function(request, response) {
+    let id=request.params.id;
+    let photo=Photo.getPhoto(id);
+    if(photo){
+      response.status(200);
+      response.setHeader('Content-Type', 'text/html')
+      response.render("photo/deletePhotoForm",{
+          user:  request.user,
+          photo: photo
+      });
+     }else{
+      response.redirect('/error?code=404');
+    }
+  });
+
+  router.post('/photos/:id', loggedIn, async (request, response) => {
+  let pd = request.body.photoDisplayName;
+  let photo = Photo.getPhoto(pd);
+  console.log(photo)
+      if(photo){
+        Photo.removePhoto(pd);
+        response.status(200);
+        response.setHeader('Content-Type', 'text/html')
+        response.render("photo/photoDetails",{
+          user: request.user,
+          photo: photo
+        });
+      }else{
+        response.redirect('/error?code=404');
+      }
+    });
+
+    router.get('/photos/:id/edit', loggedIn, function(request, response) {
+      let id=request.params.id;
+      let photo=Photo.getPhoto(id);
+      if(photo){
+        response.status(200);
+        response.setHeader('Content-Type', 'text/html')
+        response.render("photo/updatePhotoForm",{
+            user:  request.user,
+            photo: photo
+        });
+       }else{
+        response.redirect('/error?code=404');
+      }
+    });
+
+    router.post('/photo/:id/e', loggedIn, async (request, response) => {
+    let pd = request.body.photoDisplayName;
+    let description = request.body.description;
+    let photo = Photo.getPhoto(pd);
+    console.log(photo)
+        if(photo){
+          Photo.updatePhoto(pd,description);
+          response.status(200);
+          response.setHeader('Content-Type', 'text/html')
+          response.render("photo/gallery",{
+            user: request.user,
+            photo: photo
+          });
+        }else{
+          response.redirect('/error?code=404');
+        }
+      });
+
 module.exports = router;

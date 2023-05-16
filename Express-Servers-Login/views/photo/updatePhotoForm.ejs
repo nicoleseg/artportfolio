@@ -1,0 +1,29 @@
+<%- include('../partials/header', {title:"Artist Details- TAP", user:user}) -%>
+<h2>Update photo confirmation</h2>
+<table>
+  <tr>
+    <th>
+      Photo ID:
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <%=photo.displayName%>
+    </th>
+  </tr>
+</table>
+<tr>
+  <th>
+    Update description Form:
+  </th>
+</tr>
+<form action="/photos/<%=photo.displayName%>/e" enctype="multipart/form-data" method="POST">
+  <label for="PD">Confirm Photo ID: </label>
+  <input type="text" id="photoDisplayName" name="photoDisplayName"/><br>
+  <label for="PD">New Description: </label>
+  <input type="text" id="description" name="description"/><br>
+  <br>
+  <input type="submit" value="Update" required/>
+</form>
+
+<%- include('../partials/footer') -%>

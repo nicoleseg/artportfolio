@@ -3,16 +3,6 @@
 <table>
   <tr>
     <th>
-      Artist ID:
-    </th>
-  </tr>
-  <tr>
-    <th>
-      <%=artist.id%>
-    </th>
-  </tr>
-  <tr>
-    <th>
       Photo ID:
     </th>
   </tr>
@@ -27,9 +17,7 @@
     Delete Form:
   </th>
 </tr>
-<form action="/artists/<%=artist.id%>/<%=photo.displayName%>" enctype="multipart/form-data" method="POST">
-  <label for="AID">Confirm Artist ID: </label>
-  <input type="text" id="artistID" name="artistID"/><br>
+<form action="/photos/<%=photo.displayName%>" enctype="multipart/form-data" method="POST">
   <label for="PD">Confirm Photo ID: </label>
   <input type="text" id="photoDisplayName" name="photoDisplayName"/><br>
   <br>
