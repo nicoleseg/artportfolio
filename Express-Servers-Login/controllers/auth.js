@@ -6,6 +6,8 @@ const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const KEYS = require('../config/keys.json');
 //keeping our secrets out of our main application is a security best practice
 //we can add /config/keys.json to our .gitignore file so that we keep it local/private
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('example.db');
 
 let userProfile; //only used if you want to see user info beyond username
 
@@ -57,14 +59,50 @@ router.get('/auth/google/callback',
     failureRedirect: '/error?code=401'
   }),
   function(request, response) {
+    let logsData = [
+  { artistID: 'user1', open_at: '2023-01-01' },
+  { artistID: 'user2', open_at: '2023-01-02' },
+  { artistID: 'user3', open_at: '2023-01-03' },
+];
+
   //  console.log(userProfile);
+  let email=request.user._json.email.toString();
+  let artistID = "";
+  for(let i = 0; i < email.length; i++){
+  if(email[i] !== "."){
+    if(email[i] !== "@trinityschoolnycorg"){
+    artistID += email[i];
+      }
+    }
+  }
+ // Get the current timestamp
+ const openAt = new Date().toISOString();
+
+ // Insert the new login record into the logs table
+ db.run(`INSERT INTO logs (artistID, open_at) VALUES (?, ?)`, [artistID, openAt], (err) => {
+   if (err) {
+     console.error('Error inserting login record:', err);
+   }
+
+   // Add the new login information to the logsData array
+      logsData.push({ artistID, open_at: openAt });
+
+ });
     response.redirect('/');
   });
 
 router.get("/auth/logout", (request, response) => {
   request.logout();
-  let artistID = request.user._json.email;
-  Artist.createArtist(artistID, artistID.split('.')[0]);//only creates if not in artists.json
+  let email=request.user._json.email.toString();
+  let artistID = "";
+  for(let i = 0; i < email.length; i++){
+  if(email[i] !== "."){
+    if(email[i] !== "@trinityschoolnycorg"){
+    result += email[i];
+      }
+    }
+  }
+  Artist.createArtist(artistID, artistID.split('.')[0],email);//only creates if not in artists.json
   response.redirect('/');
 });
 
