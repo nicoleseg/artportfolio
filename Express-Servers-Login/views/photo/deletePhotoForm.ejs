@@ -8,7 +8,7 @@
   </tr>
   <tr>
     <th>
-      <%=photo.displayName%>
+      <%=photo.pid%>
     </th>
   </tr>
 </table>
@@ -17,9 +17,9 @@
     Delete Form:
   </th>
 </tr>
-<form action="/photos/<%=photo.displayName%>" enctype="multipart/form-data" method="POST">
+<form action="/photos/<%=photo.pid%>" enctype="multipart/form-data" method="POST">
   <label for="PD">Confirm Photo ID: </label>
-  <input type="text" id="photoDisplayName" name="photoDisplayName"/><br>
+  <input type="text" id="pid" name="pid"/><br>
   <br>
   <input type="submit" value="Delete Photo" required/>
 </form>

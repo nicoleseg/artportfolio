@@ -11,12 +11,4 @@
   <input type="submit" value="Upload an image" required/>
 </form>
 
-<SCRIPT>
-
-    let socket = io.connect('/');//the default namespace
-    socket.on('photoUploadEvent', function(data) {
-  });
-
-</SCRIPT>
-
 <%- include('../partials/footer') -%>

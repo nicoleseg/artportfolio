@@ -8,7 +8,7 @@
   </tr>
   <tr>
     <th>
-      <%=photo.displayName%>
+      <%=photo.pid%>
     </th>
   </tr>
 </table>
@@ -17,9 +17,9 @@
     Update description Form:
   </th>
 </tr>
-<form action="/photos/<%=photo.displayName%>/e" enctype="multipart/form-data" method="POST">
+<form action="/photos/<%=photo.pid%>/e" enctype="multipart/form-data" method="POST">
   <label for="PD">Confirm Photo ID: </label>
-  <input type="text" id="photoDisplayName" name="photoDisplayName"/><br>
+  <input type="text" id="pid" name="photoDisplayName"/><br>
   <label for="PD">New Description: </label>
   <input type="text" id="description" name="description"/><br>
   <br>

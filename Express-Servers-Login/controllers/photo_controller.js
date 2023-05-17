@@ -74,25 +74,43 @@ router.post('/photos', loggedIn, privateUpload.any(), async (request, response) 
   }
   let photoImage = await File.uploadFile(file);
   if(photoDisplayName&&photoImage&&photoDescription){
-    Photo.createPhoto(photoDisplayName,photoDisplayName,photoImage,photoDescription);
-    let photo = Photo.getPhoto(photoDisplayName);
     let email=request.user._json.email.toString();
-    let result = "";
-    for(let i = 0; i < email.length; i++){
-    if(email[i] !== "."){
-      if(email[i] !== "@trinityschoolnycorg"){
-      result += email[i];
-        }
-      }
+    let artistID = "";
+   for(let i = 0; i < email.length; i++){
+   if(email[i] !== "."){
+     artistID += email[i];
+     }
+   }
+   let photoID = "";
+  for(let i = 0; i < photoImage.length; i++){
+  if(photoImage[i] !== "/"){
+    if(photoImage[i] !== "."){
+      if(photoImage[i] !== ":"){
+        if(photoImage[i] !== "="){
+          if(photoImage[i] !== "&"){
+            if(photoImage[i] !== "?"){
+              if(photoImage[i] !== "-"){
+    photoID += photoImage[i];
+  }
+}
+}
+}
+}
+  }
     }
-    Artist.addPhoto(result, photo);
+  }
+  photoID+=photoDisplayName;
+  console.log(photoID)
+    Photo.createPhoto(photoID,photoDisplayName,photoImage,photoDescription);
+    let photo = Photo.getPhoto(photoID);
+    Artist.addPhoto(artistID, photo);
     global.io.emit('photoUploadEvent', {
-      artistDisplayName:result,
+      artistDisplayName: artistID,
       photoDisplayName: photoDisplayName,
       photoImage: photoImage,
       photoDescription: photoDescription
     });
-    response.redirect("/photos/"+photoDisplayName);
+    response.redirect("/photos/"+photoID);
   }else{
     response.redirect('/error?code=500');
   }
@@ -129,23 +147,23 @@ let photo = Photo.getPhoto(id);
   });
 
   router.post('/photos/:id', loggedIn, async (request, response) => {
-  let pd = request.body.photoDisplayName;
+  let pd = request.params.id;
   let photo = Photo.getPhoto(pd);
-  console.log(photo)
       if(photo){
         Photo.removePhoto(pd);
+        let photosArray = Photo.getSortedPhotos();
         response.status(200);
         response.setHeader('Content-Type', 'text/html')
-        response.render("photo/photoDetails",{
+        response.render("photo/gallery",{
           user: request.user,
-          photo: photo
+          photos: photosArray
         });
       }else{
         response.redirect('/error?code=404');
       }
     });
 
-    router.get('/photos/:id/edit', loggedIn, function(request, response) {
+    router.get('/photos/:id/update', loggedIn, function(request, response) {
       let id=request.params.id;
       let photo=Photo.getPhoto(id);
       if(photo){
@@ -161,7 +179,7 @@ let photo = Photo.getPhoto(id);
     });
 
     router.post('/photo/:id/e', loggedIn, async (request, response) => {
-    let pd = request.body.photoDisplayName;
+    let pd = request.params.id;
     let description = request.body.description;
     let photo = Photo.getPhoto(pd);
     console.log(photo)

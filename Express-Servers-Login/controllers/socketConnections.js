@@ -4,7 +4,7 @@ const socketapi = {
 };
 
 io.on('connection', function(socket){
-
+console.log('socket server started')
     socket.on('photoUploadEvent', function(data) {
     //  console.log('connection:', data.photoDisplayName);
       io.emit('photoUploadEvent', {

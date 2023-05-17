@@ -7,11 +7,12 @@ const KEYS = require('../config/keys.json');
 //keeping our secrets out of our main application is a security best practice
 //we can add /config/keys.json to our .gitignore file so that we keep it local/private
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('example.db');
+const db = new sqlite3.Database('./data/loggin.db');
 
 let userProfile; //only used if you want to see user info beyond username
 
 const Artist = require('../models/artist_model');
+const Log = require('../models/log_model');
 
 router.use(session({
   resave: false,
@@ -60,56 +61,22 @@ router.get('/auth/google/callback',
   }),
   function(request, response) {
     // Insert seed data into the logs table
-    db.serialize(() => {
-      let email=request.user._json.email.toString();
-      let artistID = "";
-      for(let i = 0; i < email.length; i++){
-      if(email[i] !== "."){
-        if(email[i] !== "@trinityschoolnycorg"){
-        artistID += email[i];
-          }
-        }
+     let email=request.user._json.email.toString();
+     let artistID = "";
+    for(let i = 0; i < email.length; i++){
+    if(email[i] !== "."){
+      artistID += email[i];
       }
-     // Get the current timestamp
-     const openAt = new Date().toISOString();
-      // Drop the logs table if it exists
-      db.run('DROP TABLE IF EXISTS logs');
-
-      // Create the logs table
-      db.run(`CREATE TABLE logs (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        artistID TEXT,
-        open_at DATE DEFAULT CURRENT_TIMESTAMP
-      )`);
-
-      db.run(`INSERT INTO logs (artistID, open_at) VALUES (?, ?)`, [artistID, openAt], (err) => {
-        if (err) {
-          console.error('Error inserting login record:', err);
-        }
-
-      });
-      });
-    // Close the database connection
-    db.close();
-  //  console.log(userProfile);
-
- // Insert the new login record into the logs table
-
+    }
+   // Get the current timestamp
+   let openAt = new Date().toString();
+   Artist.createArtist(artistID, artistID.split('.')[0],email);//only creates if not in artists.json
+  Log.tracklogin(artistID,openAt);
     response.redirect('/');
   });
 
 router.get("/auth/logout", (request, response) => {
   request.logout();
-  let email=request.user._json.email.toString();
-  let artistID = "";
-  for(let i = 0; i < email.length; i++){
-  if(email[i] !== "."){
-    if(email[i] !== "@trinityschoolnycorg"){
-    result += email[i];
-      }
-    }
-  }
-  Artist.createArtist(artistID, artistID.split('.')[0],email);//only creates if not in artists.json
   response.redirect('/');
 });
 

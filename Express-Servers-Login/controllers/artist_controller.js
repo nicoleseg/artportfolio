@@ -10,10 +10,6 @@ const express = require('express'),
   const File = require('../models/file_model')
   const Photo = require('../models/photo_model');
   const Artist = require('../models/artist_model');
-  const bodyParser = require('body-parser');
-
-  // use body-parser middleware
-  router.use(bodyParser.json());
 
 /*
   This is a function that allows us to avoid putting an
