@@ -25,7 +25,7 @@
   socket.on('photoUploadEvent', function(data) {
     console.log("socket",data)
     let mDisplay = document.getElementById('messagesDisplay');
-    text = "New photo details: ",data.artistDisplayName+", "+data.photoDisplayName+", "+data.photoImage", "+data.photoDescription"\n";
+    let text = "New photo details: "+data.artistDisplayName+", "+data.photoDisplayName+", "+data.photoImage+", "+data.photoDescription+"\n";
     mDisplay.value =  mDisplay.value.trim()+text;
   });
   </SCRIPT>
