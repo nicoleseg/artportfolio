@@ -48,6 +48,6 @@ exports.removePhoto = function(photoID){
 
 exports.updatePhoto =  function (photoID, description){
   let allPhotos = JSON.parse(fs.readFileSync(__dirname+'/../data/photos.json'));
-  if(allPhotos[photoID]) allPhotos[photoID][description];
+  if(allPhotos[photoID]) allPhotos[photoID]["description"]=description;
   fs.writeFileSync(__dirname+'/../data/opponents.json', JSON.stringify(allOpponents));
 }

@@ -178,12 +178,15 @@ let photo = Photo.getPhoto(id);
       }
     });
 
-    router.post('/photo/:id/e', loggedIn, async (request, response) => {
+    router.post('/photos/:id/update', loggedIn, async (request, response) => {
     let pd = request.params.id;
     let description = request.body.description;
     let photo = Photo.getPhoto(pd);
-    console.log(photo)
+    console.log("hi",description)
+    console.log("hi",description)
+    console.log("hi",photo)
         if(photo){
+          console.log("h",photo)
           Photo.updatePhoto(pd,description);
           response.status(200);
           response.setHeader('Content-Type', 'text/html')
