@@ -13,6 +13,7 @@
 
 <body>
   <%- include('navbar') -%>
+  <script src="/socket.io/socket.io.js"></script>
   <h1 title="The website where artists come to share and learn.">TAP: Trinity Art Portfolios</h1>
   <div id="messages">
      <h3>Messages</h3>
@@ -24,7 +25,7 @@
   socket.on('photoUploadEvent', function(data) {
     console.log("socket",data)
     let mDisplay = document.getElementById('messagesDisplay');
-        text = "New photo details: ",data.artistID+", "+data.photoDisplayName+", "+data.photoImage", "+data.photoDescription"\n";
-        mDisplay.value =  mDisplay.value.trim()+text;
+    text = "New photo details: ",data.artistDisplayName+", "+data.photoDisplayName+", "+data.photoImage", "+data.photoDescription"\n";
+    mDisplay.value =  mDisplay.value.trim()+text;
   });
   </SCRIPT>
