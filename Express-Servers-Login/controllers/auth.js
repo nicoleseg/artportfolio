@@ -71,8 +71,18 @@ router.get('/auth/google/callback',
    // Get the current timestamp
    let openAt = new Date().toString();
    Artist.createArtist(artistID, artistID.split('.')[0],email);//only creates if not in artists.json
-  Log.tracklogin(artistID,openAt);
-    response.redirect('/');
+   let text= Log.tracklogin(artistID,openAt);
+   console.log(text)
+   let artistArray = Artist.getSortedArtists();
+   if(Artist.isAdmin(artistID)){
+     response.render("artist/stats",{
+         user: request.user,
+         text:text,
+         artists: artistArray
+     });
+   }else{
+   response.redirect('/');
+ }
   });
 
 router.get("/auth/logout", (request, response) => {

@@ -1,0 +1,29 @@
+<%- include('../partials/header', {title:"TAP: All Artists", user:user}) -%>
+<h2>All Artists</h2>
+<table>
+  <tr>
+    <th>
+      Name
+    </th>
+  </tr>
+  <tr>
+  <%for(let i =0; i<artists.length; i++){%>
+  <th>
+    <a href="/artists/<%=artists[i].id%>"><%=artists[i].displayName%></a>
+  </th>
+  </tr>
+  <%}%>
+</table>
+<tr>
+  <th>
+    Stats:
+  </th>
+</tr>
+<tr>
+  <th>
+    <%=text%>
+  </th>
+</tr>
+
+
+  <%- include('../partials/footer') -%>

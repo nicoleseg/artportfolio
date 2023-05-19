@@ -188,13 +188,14 @@ let photo = Photo.getPhoto(id);
         if(photo){
           console.log("h",photo)
           Photo.updatePhoto(pd,description);
+          let photosArray = Photo.getSortedPhotos();
           response.status(200);
           response.setHeader('Content-Type', 'text/html')
           response.render("photo/gallery",{
             user: request.user,
-            photo: photo
-          });
-        }else{
+            photos: photosArray
+        });
+      }else{
           response.redirect('/error?code=404');
         }
       });
