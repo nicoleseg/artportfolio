@@ -182,19 +182,15 @@ let photo = Photo.getPhoto(id);
     let pd = request.params.id;
     let description = request.body.description;
     let photo = Photo.getPhoto(pd);
-    console.log("hi",description)
-    console.log("hi",description)
-    console.log("hi",photo)
         if(photo){
-          console.log("h",photo)
           Photo.updatePhoto(pd,description);
           let photosArray = Photo.getSortedPhotos();
-          response.status(200);
-          response.setHeader('Content-Type', 'text/html')
-          response.render("photo/gallery",{
-            user: request.user,
-            photos: photosArray
-        });
+                response.status(200);
+                response.setHeader('Content-Type', 'text/html')
+                response.render("photo/photoDetails",{
+                  user: request.user,
+                  photo: photo
+                });
       }else{
           response.redirect('/error?code=404');
         }
