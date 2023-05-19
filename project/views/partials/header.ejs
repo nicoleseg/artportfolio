@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title><%=title%></title>
+  <link rel="icon" type="image/png" href="images/logo.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+  <%- include('navbar') -%>
+  <script src="/socket.io/socket.io.js"></script>
+  <h1 title="The website where artists come to share and learn.">TAP: Trinity Art Portfolios</h1>
+  <div id="messages">
+     <h3>New Photo</h3>
+     <textarea id="messagesDisplay" name="story"
+            rows="20" cols="50">
+    </textarea><br>
+  <SCRIPT>
+  let socket = io.connect('/');//the default namespace
+  socket.on('photoUploadEvent', function(data) {
+    console.log("socket",data)
+    let mDisplay = document.getElementById('messagesDisplay');
+    let text = "New photo details: "+data.artistDisplayName+", "+data.photoDisplayName+", "+data.photoImage+", "+data.photoDescription+"\n";
+    mDisplay.value =  mDisplay.value.trim()+text;
+  });
+  </SCRIPT>
