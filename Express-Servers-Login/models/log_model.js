@@ -18,6 +18,7 @@ if(err){
  txt="Distinct artists that have been active are: ",rows.toString()
  console.log("Distinct artists that have been active are: ",rows)
 return txt;
+//return rows;
 }
 });
 })
